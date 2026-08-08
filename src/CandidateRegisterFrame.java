@@ -10,26 +10,22 @@ public class CandidateRegisterFrame extends JFrame {
     JTextField skillsField;
     JTextField experienceField;
 
+    JPasswordField passwordField;
+    JPasswordField confirmPasswordField;
+
     JButton registerBtn;
     JButton clearBtn;
     JButton backBtn;
 
-
     public CandidateRegisterFrame() {
 
         setTitle("Candidate Registration");
-        setSize(500, 550);
+        setSize(500, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
-        JLabel title = new JLabel(
-                "Candidate Registration",
-                JLabel.CENTER
-        );
-
+        JLabel title = new JLabel("Candidate Registration", JLabel.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 22));
-
 
         nameField = new JTextField();
         emailField = new JTextField();
@@ -38,16 +34,15 @@ public class CandidateRegisterFrame extends JFrame {
         skillsField = new JTextField();
         experienceField = new JTextField();
 
+        passwordField = new JPasswordField();
+        confirmPasswordField = new JPasswordField();
 
         registerBtn = new JButton("Register");
         clearBtn = new JButton("Clear");
         backBtn = new JButton("Back");
 
-
         JPanel panel = new JPanel();
-
-        panel.setLayout(new GridLayout(8,2,10,10));
-
+        panel.setLayout(new GridLayout(10, 2, 10, 10));
 
         panel.add(new JLabel("Name"));
         panel.add(nameField);
@@ -67,21 +62,21 @@ public class CandidateRegisterFrame extends JFrame {
         panel.add(new JLabel("Experience"));
         panel.add(experienceField);
 
+        panel.add(new JLabel("Password"));
+        panel.add(passwordField);
+
+        panel.add(new JLabel("Confirm Password"));
+        panel.add(confirmPasswordField);
 
         panel.add(registerBtn);
         panel.add(clearBtn);
-
 
         add(title, BorderLayout.NORTH);
         add(panel, BorderLayout.CENTER);
         add(backBtn, BorderLayout.SOUTH);
 
-
-
-        // Register button
-
+        // Register Button
         registerBtn.addActionListener(e -> {
-
 
             String name = nameField.getText();
             String email = emailField.getText();
@@ -90,7 +85,31 @@ public class CandidateRegisterFrame extends JFrame {
             String skills = skillsField.getText();
             String experience = experienceField.getText();
 
+            String password = new String(passwordField.getPassword());
+            String confirmPassword = new String(confirmPasswordField.getPassword());
 
+            if (name.isEmpty() || email.isEmpty() || phone.isEmpty()
+                    || qualification.isEmpty() || skills.isEmpty()
+                    || experience.isEmpty() || password.isEmpty()
+                    || confirmPassword.isEmpty()) {
+
+                JOptionPane.showMessageDialog(this,
+                        "Please fill all the fields.");
+                return;
+            }
+
+            if (!password.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(this,
+                        "Passwords do not match.");
+                return;
+            }
+
+            if (password.length() < 8) {
+                JOptionPane.showMessageDialog(this,
+                        "Password must contain at least 8 characters.");
+                return;
+            }
+            System.out.println("Password entered: " + password);
 
             Candidate candidate = new Candidate(
                     name,
@@ -98,28 +117,19 @@ public class CandidateRegisterFrame extends JFrame {
                     phone,
                     qualification,
                     skills,
-                    experience
+                    experience,
+                    password
             );
-
 
             CandidateDAO dao = new CandidateDAO();
-
             dao.addCandidate(candidate);
 
-
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Candidate Registered Successfully!"
-            );
-
+            JOptionPane.showMessageDialog(this,
+                    "Candidate Registered Successfully!");
 
         });
 
-
-
-        // Clear button
-
+        // Clear Button
         clearBtn.addActionListener(e -> {
 
             nameField.setText("");
@@ -128,13 +138,12 @@ public class CandidateRegisterFrame extends JFrame {
             qualificationField.setText("");
             skillsField.setText("");
             experienceField.setText("");
+            passwordField.setText("");
+            confirmPasswordField.setText("");
 
         });
 
-
-
-        // Back button
-
+        // Back Button
         backBtn.addActionListener(e -> {
 
             new HomeFrame();
@@ -142,9 +151,6 @@ public class CandidateRegisterFrame extends JFrame {
 
         });
 
-
-
         setVisible(true);
-
     }
 }

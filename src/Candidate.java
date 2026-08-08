@@ -6,15 +6,19 @@ public class Candidate {
     private String qualification;
     private String skills;
     private String experience;
+    private String password;
 
     public Candidate(String name, String email, String phone,
-                     String qualification, String skills, String experience) {
+                     String qualification, String skills,
+                     String experience, String password) {
+
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.qualification = qualification;
         this.skills = skills;
         this.experience = experience;
+        this.password = password;
     }
 
     public String getName() {
@@ -39,5 +43,9 @@ public class Candidate {
 
     public String getExperience() {
         return experience;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
